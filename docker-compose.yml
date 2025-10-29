@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: ecoscholars-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ecoscholars
+      MYSQL_USER: ecoscholars
+      MYSQL_PASSWORD: ecoscholars123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecoscholars-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ecoscholars-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ecoscholars-network
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecoscholars-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ecoscholars?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ecoscholars
+      SPRING_DATASOURCE_PASSWORD: ecoscholars123
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      JWT_SECRET: ecoscholarsSecretKeyForJWTTokenGeneration2024
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - ecoscholars-network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecoscholars-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:8080/api
+    depends_on:
+      - backend
+    networks:
+      - ecoscholars-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  ecoscholars-network:
+    driver: bridge
