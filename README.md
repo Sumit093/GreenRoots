@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Eco-Scholars is a web-based application designed to promote environmental awareness among school students by making each student responsible for nurturing a sapling throughout their school years. The platform allows schools to maintain digital records of every student's plant — encouraging sustainability, personal responsibility, and green consciousness from an early age.
+GreenRoots is a web-based application designed to promote environmental awareness among school students by making each student responsible for nurturing a sapling throughout their school years. The platform allows schools to maintain digital records of every student's plant — encouraging sustainability, personal responsibility, and green consciousness from an early age.
 
 ## 🌍 Core Features
 
@@ -37,7 +37,7 @@ Eco-Scholars is a web-based application designed to promote environmental awaren
 ## 📁 Project Structure
 
 ```
-Eco-Scholars/
+GreenRoots/
 ├── backend/                 # Spring Boot Backend
 │   ├── src/main/java/
 │   │   └── com/ecoscholars/
