@@ -1,4 +1,4 @@
-# 🌿 Eco-Scholars: Student Plant Growth Tracking System
+# 🌿 GreenRoots: Student Plant Growth Tracking System
 
 ## Project Overview
 
